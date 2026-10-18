@@ -4,117 +4,119 @@
 ![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)
 [![grammY](https://img.shields.io/badge/built%20with-grammY-009dca)](https://grammy.dev)
 
-Телеграм-бот: присылаете PNG файлом, задаёте сетку — бот режет картинку на кусочки, убирает фон и создаёт **стикер-пак** или **emoji-пак**. Готовый пак можно редактировать прямо в чате: переставлять, заменять и удалять тайлы.
+A Telegram bot: send it a PNG as a file, set a grid, and the bot slices the image into tiles, removes the background and creates a **sticker pack** or an **emoji pack**. The finished pack can be edited right in the chat: move, replace and delete tiles.
 
 <table>
   <tr>
-    <th>Исходный PNG</th>
-    <th>Превью сетки 8×5 (фон убран)</th>
+    <th>Source PNG</th>
+    <th>8×5 grid preview (background removed)</th>
   </tr>
   <tr>
-    <td><img src="docs/source.png" alt="Исходная картинка" width="400"></td>
-    <td><img src="docs/grid.png" alt="Превью с сеткой и прозрачным фоном" width="400"></td>
+    <td><img src="docs/source.png" alt="Source image" width="400"></td>
+    <td><img src="docs/grid.png" alt="Preview with grid and transparent background" width="400"></td>
   </tr>
 </table>
 
-## Возможности
+## Features
 
-- Нарезка картинки по сетке до 20×20, автоподбор строк по пропорциям
-- Стикеры 512px (до 120 шт.) или custom emoji 100×100 (до 200 шт.)
-- Удаление фона заливкой от краёв — одинаковые цвета внутри рисунка не страдают
-- Превью с наложенной сеткой до создания пака
-- Встроенный редактор пака: перемещение, замена, смена emoji, удаление
-- Для emoji-паков — сообщение, собранное из самих эмодзи по строкам сетки
+- Slices an image on a grid up to 20×20, with automatic row count based on aspect ratio
+- 512px stickers (up to 120) or 100×100 custom emoji (up to 200)
+- Background removal by flood fill from the edges — matching colors inside the drawing stay intact
+- Preview with the grid overlaid before the pack is created
+- Built-in pack editor: move, replace, change emoji, delete
+- For emoji packs — a message assembled from the emoji themselves, row by row of the grid
 
-## Быстрый старт
+## Quick start
 
-Нужен **Node.js 20+**.
+Requires **Node.js 20+**.
 
-1. Создайте бота у [@BotFather](https://t.me/BotFather) (`/newbot`) и скопируйте токен.
-2. Склонируйте репозиторий и установите зависимости:
+1. Create a bot with [@BotFather](https://t.me/BotFather) (`/newbot`) and copy the token.
+2. Clone the repository and install dependencies:
    ```bash
    git clone https://github.com/oxolegit/teletools.git
    cd teletools
    npm install
    ```
-3. Создайте `.env` из примера и впишите токен:
+3. Create `.env` from the example and put your token in it:
    ```bash
    cp .env.example .env
    # BOT_TOKEN=123456:ABC...
    ```
-4. Запустите:
+4. Run:
    ```bash
    npm start
    ```
 
-## Как пользоваться
+## Usage
 
-1. Отправьте боту PNG **как файл** (📎 → Файл), а не как фото — иначе Telegram сожмёт картинку и уберёт прозрачность.
-2. Настройте кнопками:
-   - **Стикеры / Emoji** — тип пака
-   - **Колонки / Строки** — размер сетки (до 20×20); «Строки по пропорции» подбирает строки под форму картинки
-   - **Фон** — `Авто` (если PNG уже прозрачный — не трогаем, иначе убираем), `Убрать по цвету`, `Не трогать`
-   - **Допуск** — насколько цвет может отличаться от фона, чтобы считаться фоном
-   - **Отступ** — прозрачная рамка внутри каждого тайла
-3. **Превью** — картинка с наложенной сеткой.
-4. **Создать пак** — бот пришлёт ссылку на набор, а для emoji-пака ещё и сообщение, собранное из самих эмодзи по строкам сетки (кнопка «😀 Прислать эмодзи» в редакторе пришлёт его снова).
+The bot's interface is in Russian; button labels are given below as they appear in the bot.
 
-### Команды
+1. Send the bot a PNG **as a file** (📎 → File), not as a photo — otherwise Telegram compresses the image and drops transparency.
+2. Configure with the buttons:
+   - **Stickers / Emoji** (`Стикеры / Emoji`) — pack type
+   - **Columns / Rows** (`Колонки / Строки`) — grid size (up to 20×20); "Rows by aspect ratio" (`Строки по пропорции`) picks the row count to fit the image's shape
+   - **Background** (`Фон`) — `Авто` / Auto (if the PNG is already transparent, leave it as is, otherwise remove it), `Убрать по цвету` / Remove by color, `Не трогать` / Leave as is
+   - **Tolerance** (`Допуск`) — how much a color may differ from the background and still count as background
+   - **Padding** (`Отступ`) — a transparent margin inside each tile
+3. **Preview** (`Превью`) — the image with the grid overlaid.
+4. **Create pack** (`Создать пак`) — the bot sends a link to the set, and for an emoji pack also a message assembled from the emoji themselves, row by row of the grid (the "😀 Send emoji" button — `😀 Прислать эмодзи` — in the editor sends it again).
 
-| Команда | Описание |
+### Commands
+
+| Command | Description |
 |---|---|
-| `/start` | Краткая инструкция |
-| `/title Название` | Задать название пака |
-| `/emoji 🔥` | Задать emoji для тайлов |
-| `/settings` | Показать настройки |
-| `/packs` | Список созданных паков и вход в редактор |
-| `/cancel` | Отменить ввод |
+| `/start` | Short instructions |
+| `/title Name` | Set the pack name |
+| `/emoji 🔥` | Set the emoji for tiles |
+| `/settings` | Show settings |
+| `/packs` | List created packs and open the editor |
+| `/cancel` | Cancel input |
 
-### Редактор пака
+### Pack editor
 
-После создания бот присылает превью готового пака: тайлы разложены по строкам сетки и пронумерованы. Нажмите номер, чтобы:
+After creation the bot sends a preview of the finished pack: tiles are laid out by grid rows and numbered. Tap a number to:
 
 <p align="center">
-  <img src="docs/editor.png" alt="Редактор пака: пронумерованные тайлы, выбран №20" width="700">
+  <img src="docs/editor.png" alt="Pack editor: numbered tiles, #20 selected" width="700">
 </p>
 
-- ⬅️➡️⬆️⬇️ — переместить стикер (вверх/вниз — на строку);
-- 🔄 Заменить — прислать новую картинку (фон уберётся автоматически);
-- 😀 Emoji — сменить emoji;
-- 🗑 Удалить — удалить стикер.
+- ⬅️➡️⬆️⬇️ — move the sticker (up/down moves it by a row);
+- 🔄 Replace — send a new image (the background is removed automatically);
+- 😀 Emoji — change the emoji;
+- 🗑 Delete — delete the sticker.
 
-Для всего пака есть кнопки «Добавить», «Название», «Удалить весь пак».
+For the whole pack there are "Add", "Name" and "Delete entire pack" buttons.
 
-### Как убирается фон
+### How the background is removed
 
-Цвет фона берётся из углов картинки, затем заливка идёт от краёв: прозрачными становятся только пиксели, связанные с краем и похожие на фон. Поэтому такие же цвета внутри рисунка не пропадают — на примере выше голубой фон внутри кольца планеты остался на месте.
+The background color is taken from the image corners, then a flood fill runs from the edges: only pixels connected to the edge and similar to the background become transparent. That's why the same colors inside the drawing don't disappear — in the example above, the light blue background inside the planet's ring stayed in place.
 
-### Совет для emoji-паков
+### Tip for emoji packs
 
-Панель emoji в Telegram показывает 8 штук в ряд. Чтобы картинка «собиралась» в панели, используйте 8 колонок. Пустые кусочки всегда попадают в пак (с одним невидимым пикселем), поэтому сетка не «съезжает».
+Telegram's emoji panel shows 8 per row. To make the picture "assemble" in the panel, use 8 columns. Empty tiles are always included in the pack (with a single invisible pixel), so the grid doesn't shift.
 
-## Структура проекта
+## Project structure
 
 ```
 src/
-  bot.js       — точка входа, команды и обработчики
-  settings.js  — клавиатура и состояние настроек
-  image.js     — нарезка, удаление фона, превью (sharp)
-  pack.js      — создание наборов через Bot API
-  editor.js    — редактор готового пака
-  download.js  — загрузка файлов из Telegram
-  store.js     — хранение списка паков
-docs/         — картинки для README
+  bot.js       — entry point, commands and handlers
+  settings.js  — settings keyboard and state
+  image.js     — slicing, background removal, preview (sharp)
+  pack.js      — creating sets via the Bot API
+  editor.js    — editor for finished packs
+  download.js  — downloading files from Telegram
+  store.js     — storage of the pack list
+docs/         — images for the README
 data/
-  packs.json   — созданные паки (создаётся автоматически, в git не попадает)
+  packs.json   — created packs (generated automatically, not tracked in git)
 ```
 
-## Хранение данных
+## Data storage
 
-Список созданных паков хранится локально в `data/packs.json`. Сами стикеры живут на серверах Telegram; файл нужен только для команды `/packs` и редактора. Папка `data/` и `.env` исключены из git.
+The list of created packs is stored locally in `data/packs.json`. The stickers themselves live on Telegram's servers; the file is only needed for the `/packs` command and the editor. The `data/` folder and `.env` are excluded from git.
 
-## Лицензия
+## License
 
-Бесплатно для любого использования, включая коммерческое, — [MIT с обязательной атрибуцией](LICENSE) © 2026 oxolegit.
+Free for any use, including commercial — [MIT with required attribution](LICENSE) © 2026 oxolegit.
 
-Единственное условие: если вы публикуете код или запускаете на его основе своего бота, укажите ссылку на оригинал — https://github.com/oxolegit/teletools. Для бота достаточно ссылки в описании, «about» или в сообщении `/start`, для форка — в README.
+The only condition: if you publish the code or run your own bot based on it, include a link to the original — https://github.com/oxolegit/teletools. For a bot, a link in the description, "about" or the `/start` message is enough; for a fork, in the README.
