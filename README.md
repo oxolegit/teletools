@@ -77,7 +77,7 @@ The bot's interface is in Russian; button labels are given below as they appear 
 After creation the bot sends a preview of the finished pack: tiles are laid out by grid rows and numbered. Tap a number to:
 
 <p align="center">
-  <img src="docs/editor.png" alt="Pack editor: numbered tiles, #20 selected" width="700">
+  <img src="docs/editor.png" alt="Pack editor: numbered tiles, #27 selected" width="700">
 </p>
 
 - ⬅️➡️⬆️⬇️ — move the sticker (up/down moves it by a row);
