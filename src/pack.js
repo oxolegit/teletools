@@ -28,6 +28,7 @@ export async function createPack(api, { userId, botUsername, settings, tiles, on
 
   await api.createNewStickerSet(userId, name, settings.title.slice(0, 64), first, {
     sticker_type: settings.type === 'emoji' ? 'custom_emoji' : 'regular',
+    needs_repainting: settings.type === 'emoji' && Boolean(settings.repaint),
   });
   let done = first.length;
   await onProgress?.(done, stickers.length);

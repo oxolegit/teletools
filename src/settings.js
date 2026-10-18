@@ -14,6 +14,7 @@ export function defaultSettings(username) {
     bg: 'auto',
     tolerance: 30,
     padding: 0,
+    repaint: false,
     emoji: '🙂',
     title: username ? `Pack by @${username}` : 'My pack',
   };
@@ -43,6 +44,7 @@ export function renderText(s, image) {
       (over ? `\n⚠️ Максимум ${LIMITS[s.type]} в паке этого типа` : ''),
     `Фон: <b>${BG_LABELS[s.bg]}</b>` + (s.bg === 'none' ? '' : `, допуск ${s.tolerance}`),
     `Отступ: <b>${s.padding}px</b>`,
+    s.type === 'emoji' ? `Цвет: <b>${s.repaint ? 'под тему' : 'как в PNG'}</b>` : null,
     `Emoji: ${s.emoji}`,
     `Название: <b>${escapeHtml(s.title)}</b>`,
     ``,
@@ -76,9 +78,12 @@ export function renderKeyboard(s) {
   if (s.bg !== 'none') {
     kb.text('Допуск −', 'tol:-10').text(`${s.tolerance}`, 'noop').text('Допуск +', 'tol:+10').row();
   }
-  return kb
+  kb
     .text(`Отступ: ${s.padding}px`, 'pad:next')
-    .row()
+    .row();
+  // Одноцветные emoji Telegram перекрашивает в цвет текста: белые в тёмной теме, тёмные в светлой.
+  if (s.type === 'emoji') kb.text(s.repaint ? '🎨 Цвет: под тему' : '🎨 Цвет: как в PNG', 'repaint').row();
+  return kb
     .text('👁 Превью', 'preview')
     .text('🚀 Создать пак', 'create');
 }
@@ -105,6 +110,9 @@ export function applyAction(s, action, image) {
       return true;
     case 'tol':
       s.tolerance = clamp(s.tolerance + Number(value), 0, 200);
+      return true;
+    case 'repaint':
+      s.repaint = !s.repaint;
       return true;
     case 'pad':
       s.padding = PADDINGS[(PADDINGS.indexOf(s.padding) + 1) % PADDINGS.length];

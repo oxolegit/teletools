@@ -23,6 +23,7 @@ A Telegram bot: send it a PNG as a file, set a grid, and the bot slices the imag
 - 512px stickers (up to 120) or 100×100 custom emoji (up to 200)
 - Background removal by flood fill from the edges — matching colors inside the drawing stay intact
 - Preview with the grid overlaid before the pack is created
+- Theme-adaptive emoji: one-color packs are repainted to the text color — dark in light themes, white in dark ones
 - Built-in pack editor: move, replace, change emoji, delete
 - For emoji packs — a message assembled from the emoji themselves, row by row of the grid
 
@@ -58,6 +59,7 @@ The bot's interface is in Russian; button labels are given below as they appear 
    - **Background** (`Фон`) — `Авто` / Auto (if the PNG is already transparent, leave it as is, otherwise remove it), `Убрать по цвету` / Remove by color, `Не трогать` / Leave as is
    - **Tolerance** (`Допуск`) — how much a color may differ from the background and still count as background
    - **Padding** (`Отступ`) — a transparent margin inside each tile
+   - **Color** (`Цвет`, emoji only) — `как в PNG` / as in the PNG, or `под тему` / match the theme: Telegram repaints the emoji to the text color, so a one-color drawing on a transparent background works in both light and dark themes
 3. **Preview** (`Превью`) — the image with the grid overlaid.
 4. **Create pack** (`Создать пак`) — the bot sends a link to the set, and for an emoji pack also a message assembled from the emoji themselves, row by row of the grid (the "😀 Send emoji" button — `😀 Прислать эмодзи` — in the editor sends it again).
 
